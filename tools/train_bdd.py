@@ -8,12 +8,21 @@ from detectron2.checkpoint import DetectionCheckpointer
 from detectron2.config import get_cfg
 from detectron2.data import MetadataCatalog, DatasetCatalog, build_detection_train_loader
 from detectron2.engine import DefaultTrainer, default_argument_parser, default_setup, hooks, launch
-from detectron2.evaluation import COCOEvaluator
 from detectron2.modeling import GeneralizedRCNNWithTTA
 from detectron2 import model_zoo
 from detectron2.data.datasets import register_coco_instances
 from detectron2.utils.logger import setup_logger
 from detectron2.utils.events import EventStorage
+
+from detectron2.evaluation import (
+    COCOEvaluator,
+    COCOPanopticEvaluator,
+    DatasetEvaluators,
+    LVISEvaluator,
+    PascalVOCDetectionEvaluator,
+    SemSegEvaluator,
+    verify_results,
+)
 
 from adet.data.dataset_mapper import DatasetMapperWithBasis
 from adet.config import get_cfg
