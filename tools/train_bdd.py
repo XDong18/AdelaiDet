@@ -96,7 +96,7 @@ class Trainer(DefaultTrainer):
     def build_evaluator(cls, cfg, dataset_name, output_folder=None):
         if output_folder is None:
             output_folder = os.path.join(cfg.OUTPUT_DIR, "inference_val")
-        return COCOEvaluator(dataset_name, cfg, True, output_folder
+        return COCOEvaluator(dataset_name, cfg, True, output_folder)
 
     @classmethod
     def test_with_TTA(cls, cfg, model):
