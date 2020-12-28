@@ -116,6 +116,7 @@ class SOLOv2(nn.Module):
         else:
             gt_instances = None
 
+        print('pin 1\n',gt_instances)
         features = self.backbone(images.tensor)
 
         # ins branch
@@ -169,6 +170,7 @@ class SOLOv2(nn.Module):
         return ins_label_list, cate_label_list, ins_ind_label_list, grid_order_list
         
     def get_ground_truth_single(self, img_idx, gt_instances, mask_feat_size):
+        print('pin 2\n', gt_instances[img_idx], '\npin3\n', gt_instances[img_idx].gt_classes)
         gt_bboxes_raw = gt_instances[img_idx].gt_boxes.tensor
         gt_labels_raw = gt_instances[img_idx].gt_classes
         gt_masks_raw = gt_instances[img_idx].gt_masks.tensor
