@@ -186,7 +186,8 @@ class DatasetMapperWithBasis(DatasetMapper):
             # bounding box of the cropped triangle should be [(1,0),(2,1)], which is not equal to
             if self.recompute_boxes:
                 instances.gt_boxes = instances.gt_masks.get_bounding_boxes()
-            dataset_dict["instances"] = utils.filter_empty_instances(instances)
+            # dataset_dict["instances"] = utils.filter_empty_instances(instances) # TODO for solov2 
+            dataset_dict["instances"] = instances
 
         if self.basis_loss_on and self.is_train:
             # load basis supervisions
