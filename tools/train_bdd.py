@@ -119,13 +119,13 @@ def setup(args):
     cfg = get_cfg()
 
     # set config file
-    cfg.merge_from_file("configs/SOLOv2/R50_3x_multi_scale.yaml")
+    cfg.merge_from_file("configs/SOLOv2/R50_3x_multi_scale_16bs.yaml")
     cfg.DATASETS.TRAIN = ("bdd100k_train",)
     cfg.DATASETS.TEST = ("bdd100k_test",)
     # cfg.MODEL.WEIGHTS = model_zoo.get_checkpoint_url("COCO-Detection/faster_rcnn_X_101_32x8d_FPN_3x.yaml")  # Let training initialize from model zoo
 
 
-    cfg.OUTPUT_DIR = './out/solov2_r_50_3x_multi_scale'
+    cfg.OUTPUT_DIR = './out/solov2_r_50_3x_multi_scale_16bs'
     os.makedirs(cfg.OUTPUT_DIR, exist_ok=True)
     # new added solver arguments
     cfg.SOLVER.CHECKPOINT_PERIOD = 500

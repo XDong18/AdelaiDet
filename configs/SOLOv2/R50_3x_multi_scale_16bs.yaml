@@ -1,0 +1,24 @@
+_BASE_: "Base-SOLOv2.yaml"
+MODEL:
+  WEIGHTS: "detectron2://ImageNetPretrained/MSRA/R-50.pkl"
+  RESNETS:
+    DEPTH: 50
+SOLVER:
+  IMS_PER_BATCH: 16
+  BASE_LR: 0.01
+  STEPS: (10800, 14400,)
+  MAX_ITER: 15750
+INPUT:
+  MIN_SIZE_TRAIN:
+  - 800
+  - 832
+  - 864
+  - 896
+  - 928
+  - 960
+  - 992
+  - 1024
+  - 1024
+  MAX_SIZE_TRAIN: 2048
+  MIN_SIZE_TEST: 2048
+  MAX_SIZE_TEST: 2048
