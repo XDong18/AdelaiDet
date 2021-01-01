@@ -1,0 +1,30 @@
+_BASE_: "Base-CondInst.yaml"
+MODEL:
+  WEIGHTS: "detectron2://ImageNetPretrained/MSRA/R-101.pkl"
+  RESNETS:
+    DEPTH: 101
+  ROI_HEADS:
+    NUM_CLASSES: 8
+  CONDINST:
+    MASK_BRANCH:
+      SEMANTIC_LOSS_ON: True
+SOLVER:
+  IMS_PER_BATCH: 16
+  BASE_LR: 0.01
+  STEPS: (10800, 14400,)
+  MAX_ITER: 15750
+OUTPUT_DIR: "output/condinst_MS_R_101_3x_sem"
+INPUT:
+  MIN_SIZE_TRAIN:
+  - 800
+  - 832
+  - 864
+  - 896
+  - 928
+  - 960
+  - 992
+  - 1024
+  - 1024
+  MAX_SIZE_TRAIN: 2048
+  MIN_SIZE_TEST: 2048
+  MAX_SIZE_TEST: 2048
