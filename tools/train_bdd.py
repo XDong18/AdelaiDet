@@ -125,7 +125,7 @@ def setup(args):
     # cfg.MODEL.WEIGHTS = model_zoo.get_checkpoint_url("COCO-Detection/faster_rcnn_X_101_32x8d_FPN_3x.yaml")  # Let training initialize from model zoo
 
 
-    cfg.OUTPUT_DIR = './out/CondInst_r_101_3x_multi_scale_16bs'
+    cfg.OUTPUT_DIR = './out/CondInst_r_101_3x_multi_scale_8bs'
     os.makedirs(cfg.OUTPUT_DIR, exist_ok=True)
     # new added solver arguments
     cfg.SOLVER.CHECKPOINT_PERIOD = 500
