@@ -17,7 +17,7 @@ for img_id in img_ids:
         anno_area = area(rle)
         if anno_area < 32 * 32:
             small_count += 1
-        elif anno_ids < 96 *96:
+        elif anno_area < 96 *96:
             medium_count += 1
         else:
             large_count += 1
