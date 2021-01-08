@@ -1,5 +1,5 @@
-from pycocoapi.coco import COCO
-from pycocoapi.mask import area
+from pycocotools.coco import COCO
+from pycocotools.mask import area
 
 
 coco = COCO('/shared/xudongliu/bdd100k/labels/ins_seg/ins_seg_val.json')
