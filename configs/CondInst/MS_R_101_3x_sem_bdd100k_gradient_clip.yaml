@@ -12,7 +12,7 @@ SOLVER:
   CLIP_GRADIENTS:
     CLIP_TYPE: value
     CLIP_VALUE: 1.0
-    ENABLED: false
+    ENABLED: True
     NORM_TYPE: 2.0
   IMS_PER_BATCH: 6
   BASE_LR: 0.00375
