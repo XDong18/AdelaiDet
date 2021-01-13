@@ -1,2 +1,2 @@
-export CUDA_VISIBLE_DEVICES=6,7,8,9
-python train_bdd.py --num-gpus 4 --dist-url auto --eval-only MODEL.WEIGHTS ./bdd100k_retinanet_new/Retinanet_r_101_fpn_1x-745c57cc.pth
+export CUDA_VISIBLE_DEVICES=1,8,9
+python train_bdd.py --num-gpus 3 --dist-url auto --eval-only MODEL.WEIGHTS ./out/solov2_r_101_3x_multi_scale_16bs/model_0012499.pth
