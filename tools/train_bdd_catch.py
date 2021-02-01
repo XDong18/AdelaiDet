@@ -238,6 +238,8 @@ def main(args):
             res.update(Trainer.test_with_TTA(cfg, model))
         return res
 
+    model = build_model(cfg)
+    logger.info("Model:\n{}".format(model))
     distributed = comm.get_world_size() > 1
     if distributed:
         model = DistributedDataParallel(
