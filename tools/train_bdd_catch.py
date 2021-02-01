@@ -157,7 +157,7 @@ def do_train(cfg, model, resume=False):
     checkpointer = AdetCheckpointer(
         model, cfg.OUTPUT_DIR, optimizer=optimizer, scheduler=scheduler
     )
-    checkpointer.resume_or_load(cfg.MODEL.WEIGHTS, resume=args.resume)
+    checkpointer.resume_or_load(cfg.MODEL.WEIGHTS, resume=resume)
     start_iter = (
         0
     )
