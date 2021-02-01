@@ -157,9 +157,9 @@ def do_train(cfg, model, resume=False):
     checkpointer = AdetCheckpointer(
         model, cfg.OUTPUT_DIR, optimizer=optimizer, scheduler=scheduler
     )
-
+    checkpointer.resume_or_load(cfg.MODEL.WEIGHTS, resume=args.resume)
     start_iter = (
-        1
+        0
     )
     max_iter = cfg.SOLVER.MAX_ITER
 
@@ -208,14 +208,14 @@ def do_train(cfg, model, resume=False):
             storage.put_scalar("lr", optimizer.param_groups[0]["lr"], smoothing_hint=False)
             scheduler.step()
 
-            if (
-                cfg.TEST.EVAL_PERIOD > 0
-                and (iteration + 1) % cfg.TEST.EVAL_PERIOD == 0
-                and iteration != max_iter - 1
-            ):
-                do_test(cfg, model)
+            # if (
+            #     cfg.TEST.EVAL_PERIOD > 0
+            #     and (iteration + 1) % cfg.TEST.EVAL_PERIOD == 0
+            #     and iteration != max_iter - 1
+            # ):
+                # do_test(cfg, model)
                 # Compared to "train_net.py", the test results are not dumped to EventStorage
-                comm.synchronize()
+                # comm.synchronize()
 
             if iteration - start_iter > 5 and (
                 (iteration + 1) % 20 == 0 or iteration == max_iter - 1
