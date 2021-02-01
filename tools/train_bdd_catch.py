@@ -37,6 +37,8 @@ from adet.checkpoint import AdetCheckpointer
 from adet.evaluation import TextEvaluator
 
 
+logger = logging.getLogger("adet")
+
 class Trainer(DefaultTrainer):
     """
     This is the same Trainer except that we rewrite the
