@@ -134,7 +134,7 @@ def setup(args):
     # cfg.MODEL.WEIGHTS = model_zoo.get_checkpoint_url("COCO-Detection/faster_rcnn_X_101_32x8d_FPN_3x.yaml")  # Let training initialize from model zoo
 
 
-    cfg.OUTPUT_DIR = './out/CondInst_R_101_3x_sem_bdd100k_single_scale_catch'
+    cfg.OUTPUT_DIR = './out/CondInst_R_101_3x_sem_bdd100k_single_scale_catch_2'
     os.makedirs(cfg.OUTPUT_DIR, exist_ok=True)
     # new added solver arguments
     cfg.SOLVER.CHECKPOINT_PERIOD = 500
@@ -196,7 +196,7 @@ def do_train(cfg, model, resume=False):
                     torch.save(model.state_dict(), os.path.join(cfg.OUTPUT_DIR, 'catched_cpt.pth'))
                 
                 torch.save(data, os.path.join(cfg.OUTPUT_DIR, f'catched_data_{comm.get_rank()}.pth'))
-                torch.save(loss, os.path.join(cfg.OUTPUT_DIR, f'catched_loss_{comm.get_rank()}.pth'))
+                torch.save(loss_dict, os.path.join(cfg.OUTPUT_DIR, f'catched_loss_{comm.get_rank()}.pth'))
                 exit(0)
             
             assert torch.isfinite(losses).all(), loss_dict
