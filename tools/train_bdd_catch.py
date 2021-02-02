@@ -134,7 +134,7 @@ def setup(args):
     # cfg.MODEL.WEIGHTS = model_zoo.get_checkpoint_url("COCO-Detection/faster_rcnn_X_101_32x8d_FPN_3x.yaml")  # Let training initialize from model zoo
 
 
-    cfg.OUTPUT_DIR = './out/CondInst_R_101_3x_sem_bdd100k_single_scale_catch_2'
+    cfg.OUTPUT_DIR = './out/CondInst_R_101_3x_sem_bdd100k_single_scale_catch_3'
     os.makedirs(cfg.OUTPUT_DIR, exist_ok=True)
     # new added solver arguments
     cfg.SOLVER.CHECKPOINT_PERIOD = 500
@@ -193,10 +193,11 @@ def do_train(cfg, model, resume=False):
             if not torch.isfinite(losses).all():
                 print(f'!!!infinite loss batch catched in rank:{comm.get_rank()}!!!')
                 if comm.is_main_process():
-                    torch.save(model.state_dict(), os.path.join(cfg.OUTPUT_DIR, 'catched_cpt.pth'))
+                    pass
+                    # torch.save(model.state_dict(), os.path.join(cfg.OUTPUT_DIR, 'catched_cpt.pth'))
                 
-                torch.save(data, os.path.join(cfg.OUTPUT_DIR, f'catched_data_{comm.get_rank()}.pth'))
-                torch.save(loss_dict, os.path.join(cfg.OUTPUT_DIR, f'catched_loss_{comm.get_rank()}.pth'))
+                # torch.save(data, os.path.join(cfg.OUTPUT_DIR, f'catched_data_{comm.get_rank()}.pth'))
+                # torch.save(loss_dict, os.path.join(cfg.OUTPUT_DIR, f'catched_loss_{comm.get_rank()}.pth'))
                 exit(0)
             
             assert torch.isfinite(losses).all(), loss_dict
@@ -204,9 +205,18 @@ def do_train(cfg, model, resume=False):
             losses_reduced = sum(loss for loss in loss_dict_reduced.values())
             if comm.is_main_process():
                 storage.put_scalars(total_loss=losses_reduced, **loss_dict_reduced)
+                
 
             optimizer.zero_grad()
             losses.backward()
+            
+            # compute max abs(gradient)
+            if comm.is_main_process():
+                temp_max = 0
+                for para in model.parameters():
+                    temp_max = max(temp_max, torch.max(torch.abs(param.grad)).item())
+                storage.put_scalar("max_gradient", temp_max, smoothing_hint=False)
+
             optimizer.step()
             storage.put_scalar("lr", optimizer.param_groups[0]["lr"], smoothing_hint=False)
             scheduler.step()
@@ -220,11 +230,11 @@ def do_train(cfg, model, resume=False):
                 # Compared to "train_net.py", the test results are not dumped to EventStorage
                 # comm.synchronize()
 
-            if iteration - start_iter > 5 and (
-                (iteration + 1) % 20 == 0 or iteration == max_iter - 1
-            ):
-                for writer in writers:
-                    writer.write()
+            # if iteration - start_iter > 5 and (
+            #     (iteration + 1) % 1 == 0 or iteration == max_iter - 1
+            # ):
+            for writer in writers:
+                writer.write()
             periodic_checkpointer.step(iteration)
 
 def main(args):
