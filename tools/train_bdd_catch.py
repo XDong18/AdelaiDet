@@ -214,7 +214,8 @@ def do_train(cfg, model, resume=False):
             if comm.is_main_process():
                 temp_max = 0
                 for para in model.parameters():
-                    temp_max = max(temp_max, torch.max(torch.abs(para.grad)).item())
+                    if para.grad:
+                        temp_max = max(temp_max, torch.max(torch.abs(para.grad)).item())
                 storage.put_scalar("max_gradient", temp_max, smoothing_hint=False)
 
             optimizer.step()
