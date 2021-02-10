@@ -1,5 +1,5 @@
-export CUDA_VISIBLE_DEVICES=4,5,8
-python vis/demo.py --config-file configs/BDD00K-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml \
+export CUDA_VISIBLE_DEVICES=2,3,4,5,6,7,8,9
+python vis/demo.py --config-file configs/CondInst/MS_R_101_3x_sem_bdd100k_single_scale.yaml \
   --input /data5/bdd100k/images/10k/val/* \
-  --output show/mask_rcnn_R_50_FPN_3x_val/ \
-  --opts SOLVER.IMS_PER_BATCH 12 MODEL.WEIGHTS /shared/xudongliu/code/bdd100k_det/bdd100k_maskrcnn_720_8bs_0.01_3x/model_final.pth
+  --output show/condInst_r101_single_scale_3x_val/ \
+  --opts SOLVER.IMS_PER_BATCH 16 MODEL.WEIGHTS ./out/CondInst_R_101_3x_sem_bdd100k_single_scale_catch_3/model_final.pth
