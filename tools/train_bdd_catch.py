@@ -193,11 +193,11 @@ def do_train(cfg, model, resume=False):
             if not torch.isfinite(losses).all():
                 print(f'!!!infinite loss batch catched in rank:{comm.get_rank()}!!!')
                 if comm.is_main_process():
-                    pass
-                    # torch.save(model.state_dict(), os.path.join(cfg.OUTPUT_DIR, 'catched_cpt.pth'))
+                    # pass
+                    torch.save(model.state_dict(), os.path.join(cfg.OUTPUT_DIR, 'catched_cpt.pth'))
                 
-                # torch.save(data, os.path.join(cfg.OUTPUT_DIR, f'catched_data_{comm.get_rank()}.pth'))
-                # torch.save(loss_dict, os.path.join(cfg.OUTPUT_DIR, f'catched_loss_{comm.get_rank()}.pth'))
+                torch.save(data, os.path.join(cfg.OUTPUT_DIR, f'catched_data_{comm.get_rank()}.pth'))
+                torch.save(loss_dict, os.path.join(cfg.OUTPUT_DIR, f'catched_loss_{comm.get_rank()}.pth'))
                 exit(0)
             
             assert torch.isfinite(losses).all(), loss_dict
@@ -215,7 +215,14 @@ def do_train(cfg, model, resume=False):
                 temp_max = 0
                 for para in model.parameters():
                     if para.grad != None:
-                        temp_max = max(temp_max, torch.max(torch.abs(para.grad)).item())
+                        para_max = torch.max(torch.abs(para.grad)).item()
+                        if para_max > 100:
+                            if comm.is_main_process():
+                                torch.save(model.state_dict(), os.path.join(cfg.OUTPUT_DIR, 'exp_cpt.pth'))
+                
+                            torch.save(data, os.path.join(cfg.OUTPUT_DIR, f'exp_data_{comm.get_rank()}.pth'))
+                            torch.save(loss_dict, os.path.join(cfg.OUTPUT_DIR, f'exps_loss_{comm.get_rank()}.pth'))
+                        temp_max = max(temp_max, para_max)
                 storage.put_scalar("max_gradient", temp_max, smoothing_hint=False)
 
             optimizer.step()
