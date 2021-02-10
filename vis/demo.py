@@ -7,7 +7,7 @@ import time
 import cv2
 import tqdm
 
-from detectron2.config import get_cfg
+from adet.config import get_cfg
 from detectron2.data.detection_utils import read_image
 from detectron2.utils.logger import setup_logger
 
